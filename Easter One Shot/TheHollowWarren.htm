@@ -28,6 +28,11 @@
   }
  
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
  
   body {
     background: var(--parchment);
@@ -35,6 +40,8 @@
     font-family: 'Crimson Pro', Georgia, serif;
     font-size: 13px;
     line-height: 1.5;
+    max-width: 100%;
+    margin: 0 auto;
   }
  
   @media print {
@@ -45,7 +52,7 @@
  
   /* ── PAGE LAYOUT ── */
   .page {
-    width: 8.5in;
+    width: 100%;
     min-height: 11in;
     margin: 0 auto;
     padding: 0.5in 0.55in;
