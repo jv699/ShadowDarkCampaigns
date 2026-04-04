@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Hollow Warren — DM Reference</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+ 
+  :root {
+    --parchment: #f5eedc;
+    --parchment-dark: #e8ddc4;
+    --ink: #2a1f14;
+    --ink-light: #4a3728;
+    --rose: #c9697a;
+    --rose-light: #f0c4cb;
+    --lavender: #9b7eb8;
+    --lavender-light: #ddd0ee;
+    --mint: #5a9e7c;
+    --mint-light: #c8e8d8;
+    --gold: #b8860b;
+    --gold-light: #f5e0a0;
+    --coral: #d4845a;
+    --coral-light: #f5d4c0;
+    --butter: #c8a820;
+    --butter-light: #f5ecb0;
+    --border: #8b6914;
+  }
+ 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
+ 
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+ 
+  @media print {
+    body { font-size: 11px; }
+    .page { page-break-after: always; }
+    .no-break { page-break-inside: avoid; }
+  }
+ 
+  /* ── PAGE LAYOUT ── */
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 0 auto;
+    padding: 0.5in 0.55in;
+    background: var(--parchment);
+    position: relative;
+  }
+ 
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 18px;
+    border: 2px solid var(--border);
+    pointer-events: none;
+    opacity: 0.4;
+  }
+ 
+  /* ── HEADER ── */
+  .doc-header {
+    text-align: center;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 3px double var(--border);
+  }
+ 
+  .doc-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+ 
+  .doc-header .subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--ink-light);
+    margin-top: 3px;
+  }
+ 
+  .doc-header .tagline {
+    font-style: italic;
+    color: var(--rose);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+ 
+  /* ── TWO COLUMN LAYOUT ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+ 
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+ 
+  /* ── SECTION CARDS ── */
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+ 
+  .card-header {
+    padding: 5px 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+ 
+  .card-body {
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.3);
+  }
+ 
+  /* Color themes per area */
+  .theme-rose .card-header    { background: var(--rose-light);     color: #7a2030; border-bottom: 1px solid var(--rose); }
+  .theme-lavender .card-header { background: var(--lavender-light); color: #4a2870; border-bottom: 1px solid var(--lavender); }
+  .theme-mint .card-header    { background: var(--mint-light);     color: #1e5c3a; border-bottom: 1px solid var(--mint); }
+  .theme-gold .card-header    { background: var(--gold-light);     color: #5c4000; border-bottom: 1px solid var(--gold); }
+  .theme-coral .card-header   { background: var(--coral-light);    color: #6e2c0a; border-bottom: 1px solid var(--coral); }
+  .theme-butter .card-header  { background: var(--butter-light);   color: #5c4000; border-bottom: 1px solid var(--butter); }
+  .theme-dark .card-header    { background: #3a2a1a;               color: #f0e0c0; border-bottom: 1px solid var(--border); }
+  .theme-purple .card-header  { background: #2a1a3a;               color: #e0d0f5; border-bottom: 1px solid var(--lavender); }
+ 
+  /* ── STAT BLOCK ── */
+  .stat-block {
+    background: var(--parchment-dark);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+  }
+ 
+  .stat-block h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 3px;
+    margin-bottom: 6px;
+  }
+ 
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+ 
+  .stat-row span { white-space: nowrap; }
+  .stat-label { font-weight: 600; color: var(--ink-light); }
+ 
+  .ability { font-style: italic; margin-top: 4px; font-size: 12px; }
+  .ability strong { font-style: normal; }
+ 
+  /* ── TABLES ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+ 
+  th {
+    background: var(--parchment-dark);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 6px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+ 
+  td {
+    padding: 3px 6px;
+    border-bottom: 1px solid rgba(139,105,20,0.2);
+    vertical-align: top;
+  }
+ 
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.3); }
+ 
+  /* ── EGG TRACKER ── */
+  .egg-tracker {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+    margin-top: 6px;
+  }
+ 
+  .egg-zone {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 5px 4px;
+    text-align: center;
+    font-size: 10px;
+  }
+ 
+  .egg-zone .zone-name {
+    font-family: 'Cinzel', serif;
+    font-size: 8.5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--ink-light);
+    margin-bottom: 4px;
+    display: block;
+  }
+ 
+  .egg-dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    justify-content: center;
+  }
+ 
+  .egg-dot {
+    width: 13px;
+    height: 13px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    border: 1px solid var(--border);
+    display: inline-block;
+  }
+ 
+  .egg-dot.rose    { background: var(--rose-light); }
+  .egg-dot.lavender { background: var(--lavender-light); }
+  .egg-dot.mint    { background: var(--mint-light); }
+  .egg-dot.gold    { background: var(--gold-light); }
+  .egg-dot.coral   { background: var(--coral-light); }
+  .egg-dot.butter  { background: var(--butter-light); }
+ 
+  /* ── CORRUPTION TABLE ── */
+  .d6-table td:first-child {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--rose);
+    width: 22px;
+    text-align: center;
+  }
+ 
+  /* ── DUNGEON MAP ── */
+  .map-container {
+    font-family: 'Crimson Pro', monospace;
+    font-size: 11.5px;
+    text-align: center;
+    padding: 8px 0 4px;
+    line-height: 1.7;
+    color: var(--ink-light);
+  }
+ 
+  .map-node {
+    display: inline-block;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 8px;
+    background: var(--parchment-dark);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+ 
+  /* ── XP TRACKER ── */
+  .xp-bar-wrap {
+    background: var(--parchment-dark);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    height: 14px;
+    overflow: hidden;
+    margin: 4px 0;
+    position: relative;
+  }
+ 
+  .xp-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--ink);
+    z-index: 2;
+  }
+ 
+  .xp-fill {
+    height: 100%;
+    border-radius: 20px;
+  }
+ 
+  /* ── INLINE LIST ── */
+  ul.inline { list-style: none; }
+  ul.inline li { padding: 2px 0; padding-left: 14px; position: relative; font-size: 12px; }
+  ul.inline li::before { content: '◆'; position: absolute; left: 0; font-size: 8px; color: var(--rose); top: 4px; }
+ 
+  /* ── DC BADGE ── */
+  .dc {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--parchment);
+    border-radius: 3px;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 5px;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+  }
+ 
+  /* ── MISC ── */
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 3px;
+    margin-bottom: 10px;
+    margin-top: 14px;
+  }
+ 
+  .section-title:first-child { margin-top: 0; }
+ 
+  .note-box {
+    background: var(--gold-light);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+ 
+  .tag {
+    display: inline-block;
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+ 
+  .tag-buff   { background: var(--mint-light);     color: #1e5c3a; }
+  .tag-debuff { background: var(--rose-light);     color: #7a2030; }
+  .tag-mixed  { background: var(--lavender-light); color: #4a2870; }
+ 
+  .page-num {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--ink-light);
+    margin-top: 16px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    opacity: 0.6;
+  }
+ 
+  b { font-weight: 600; }
+  em { color: var(--ink-light); }
+</style>
+</head>
+<body>
+ 
+<!-- ═══════════════════════════════════════════════════ PAGE 1 ═══ -->
+<div class="page">
+ 
+  <div class="doc-header">
+    <div class="subtitle">Shadowdark One-Shot · 1–2 Players · Level 1 · ~4 Hours</div>
+    <h1>The Hollow Warren</h1>
+    <div class="tagline">Expanded descriptions of the Cloverwick Dungeon</div>
+  </div>
+ 
+  <!-- ROOM EXPANDED REFS -->
+  <div class="section-title" style="margin-top:14px;">Room Reference</div>
+  <div>
+ 
+    <div>
+ 
+      <div class="card theme-rose no-break">
+        <div class="card-header">🌿 Area 1 — The Mouth</div>
+        <div class="card-body">
+          <p style="font-size:12px;font-style:italic;margin-bottom:5px;">Hawthorn-framed entrance, packed smooth walls threaded with roots. Clover grows pink instead of white. Faint sweetness in the air.</p>
+          <ul class="inline">
+            <li><b>Encounter:</b> Giant Warren Hare (HD1, AC12, d4 bite). Frightened, not hostile. <span class="dc">DC 10 WIS</span> to read it. Calming it = future ally.</li>
+            <li><b>Egg 1:</b> Pink clover patch <span class="dc">DC 6 WIS</span></li>
+            <li><b>Egg 2:</b> Hollow of a glowing root, high on wall <span class="dc">DC 8 STR/DEX</span></li>
+            <li><b>Egg 3:</b> Half-buried under muddy boot prints <span class="dc">DC 8 WIS</span></li>
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="card theme-lavender no-break">
+        <div class="card-header">🔀 Area 2 — The Burrow Cross</div>
+        <div class="card-body">
+          <p style="font-size:12px;font-style:italic;margin-bottom:5px;">Junction chamber. Left: warm lavender glow (Corruption). Right: dark, smells of chocolate. Scratch-mark art filled with pastel clay. Child's basket at center.</p>
+          <ul class="inline">
+            <li><b>No combat</b> — atmosphere + choice. Scratching sounds from both paths.</li>
+            <li><b>Egg 1:</b> Inside the basket, mixed with straw — <em>free find</em></li>
+            <li><b>Eggs 2:</b> Behind disturbed clay in the scratch-art <span class="dc">DC 10 WIS</span></li>
+            <li><b>Eggs 3–4:</b> Cache under the basket <span class="dc">DC 8 WIS</span></li>
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="card theme-gold no-break">
+        <div class="card-header">🛒 Area 2b — The Warren Market</div>
+        <div class="card-body">
+          <p style="font-size:12px;font-style:italic;margin-bottom:5px;">30ft bubble chamber. Three Merchant Hares in cloth aprons run stone stalls lit by luminous mushrooms. Swept floor, colorful root-banners.</p>
+          <ul class="inline">
+            <li><b>Stall 1</b> → Pastel Mist Vial. Wants something <em>shiny.</em></li>
+            <li><b>Stall 2</b> → Corrupted Carrot. Wants something <em>sweet.</em></li>
+            <li><b>Stall 3</b> → Warren map on bark. Wants something <em>soft.</em></li>
+            <li>Steal/attack = shriek → 1d4 Pastel Rabbits arrive in 1 round.</li>
+            <li><b>Eggs 1–3:</b> On Stall 1 display — must be traded for</li>
+            <li><b>Egg 4:</b> In cloth pouch on root-banner overhead <span class="dc">DC 8 WIS</span></li>
+            <li><b>Egg 5:</b> Behind luminous mushrooms <span class="dc">DC 6 WIS</span></li>
+            <li><b>Egg 6:</b> Under swept floor, scrape of dirt <span class="dc">DC 10 WIS</span></li>
+          </ul>
+        </div>
+      </div>
+ 
+    </div>
+ 
+    <div>
+ 
+      <div class="card theme-rose no-break">
+        <div class="card-header">🐣 Area 3 — The Nursery</div>
+        <div class="card-body">
+          <p style="font-size:12px;font-style:italic;margin-bottom:5px;">Rose-pink walls with slowly rotating swirl patterns. Dozens of glowing pastel eggs in alcoves. Thick dry grass floor. Two children asleep in center nest — unharmed, Sugared Slumber.</p>
+          <ul class="inline">
+            <li><b>Encounter:</b> 2× Pastel-Touched Rabbits. On hit: roll Chromatic Sneeze (d4).</li>
+            <li><b>Loot:</b> Candy Potion in one alcove egg (heals 1d4 HP).</li>
+            <li><b>Eggs 1–2:</b> Buried in nest grass around children <span class="dc">DC 6 WIS</span></li>
+            <li><b>Egg 3:</b> Inside a cracked alcove egg <span class="dc">DC 8 WIS</span></li>
+            <li><b>Egg 4:</b> Flush with pink wall, camouflaged <span class="dc">DC 12 WIS</span></li>
+            <li><b>Eggs 5–6:</b> Cache beneath raised grass <span class="dc">DC 8 WIS</span></li>
+            <li><b>Egg 7:</b> High alcove ledge — visible <span class="dc">DC 6</span>, climb <span class="dc">DC 8 DEX</span></li>
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="card theme-mint no-break">
+        <div class="card-header">🖼️ Area 3b — The Painted Hall</div>
+        <div class="card-body">
+          <p style="font-size:12px;font-style:italic;margin-bottom:5px;">Long narrow tunnel, smoothed walls covered in illuminated-manuscript murals. Peach lantern hangs at midpoint. Leather satchel on root peg. Final mural reads: <em>"It just wants a friend."</em></p>
+          <ul class="inline">
+            <li><span class="dc">DC 8 INT</span> — Cult sealed idol because it eroded free will with joy. Hints at re-sealing.</li>
+            <li><span class="dc">DC 10 WIS</span> — Child's paint-stained fingerprints at child-height on final mural.</li>
+            <li><b>Entering:</b> <span class="dc">DC 8 WIS</span> or spend first round stunned by the colors.</li>
+            <li><b>Satchel:</b> Cultist Notes (advantage on re-sealing check) + 8cp</li>
+            <li><b>Egg 1:</b> Inside the leather satchel — <em>auto-find</em></li>
+            <li><b>Egg 2:</b> Painted into the mural wall — real depth <span class="dc">DC 10 WIS</span></li>
+            <li><b>Egg 3:</b> Atop the peach lantern — loud if disturbed <span class="dc">DC 8 WIS</span></li>
+            <li><b>Egg 4:</b> Floor crack near final mural <span class="dc">DC 8 WIS</span></li>
+            <li><b>Egg 5:</b> Behind painted false door in mural <span class="dc">DC 12 WIS/INT</span></li>
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="card theme-butter no-break">
+        <div class="card-header">🍬 Area 4 — The Candy Vein</div>
+        <div class="card-body">
+          <p style="font-size:12px;font-style:italic;margin-bottom:5px;">Amber-gold crystallized sugar seam from floor to ceiling. Crystal-furred walls scatter rainbow light. Floor is slick and glittering. Child's scarf caught on a jagged outcropping.</p>
+          <ul class="inline">
+            <li><b>Encounter:</b> Sugar Sprite (HD1, AC13, d4 shard throw, flies). Territorial. Can trade: one colored egg → Crystal Shard (difficult terrain item).</li>
+            <li><b>Hazard:</b> Slick floor — move quickly = <span class="dc">DC 8 DEX</span> or prone.</li>
+            <li><b>Egg 1:</b> Caught with child's scarf — <em>auto-find</em></li>
+            <li><b>Eggs 2–3:</b> Embedded in the vein, visible as shapes <span class="dc">DC 8 WIS</span> + 1 round to chip free</li>
+            <li><b>Egg 4:</b> Frozen flat in crystal floor <span class="dc">DC 10 WIS</span></li>
+            <li><b>Egg 5:</b> Hollow behind the vein — Sprite retrieves it if combat starts <span class="dc">DC 8 WIS</span></li>
+          </ul>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <div class="page-num">PAGE 1 OF 2 · THE HOLLOW WARREN · DM REFERENCE</div>
+</div>
+ 
+<!-- ═══════════════════════════════════════════════════ PAGE 2 ═══ -->
+<div class="page">
+ 
+  <div class="doc-header">
+    <div class="subtitle">DM Reference — Page 2</div>
+    <h1>The Hollow Warren</h1>
+    <div class="tagline">Encounters · Boss · Corruption · Loot · Endings</div>
+  </div>
+ 
+  <div class="two-col">
+    <div>
+ 
+      <!-- STAT BLOCKS -->
+      <div class="section-title">Stat Blocks</div>
+ 
+      <div class="stat-block no-break">
+        <h3>Giant Warren Hare</h3>
+        <div class="stat-row">
+          <span><span class="stat-label">HD</span> 1 (5 HP)</span>
+          <span><span class="stat-label">AC</span> 12</span>
+          <span><span class="stat-label">MV</span> Fast (40ft)</span>
+          <span><span class="stat-label">ATK</span> Bite d4</span>
+        </div>
+        <p class="ability"><strong>Frightened:</strong> Not hostile. <span class="dc">DC 10 WIS</span> to read its fear. Calming it makes it a future ally — it reappears at Area 5 entrance if befriended.</p>
+      </div>
+ 
+      <div class="stat-block no-break">
+        <h3>Pastel-Touched Rabbit</h3>
+        <div class="stat-row">
+          <span><span class="stat-label">HD</span> 1 (4 HP)</span>
+          <span><span class="stat-label">AC</span> 11</span>
+          <span><span class="stat-label">MV</span> Normal</span>
+          <span><span class="stat-label">ATK</span> Bite d4</span>
+        </div>
+        <p class="ability"><strong>Chromatic Sneeze (on hit, d4):</strong> 1 = target glows, disadvantage on stealth; 2 = smells of flowers, animals skip their attack this turn; 3 = hair turns random color, no effect; 4 = euphoric, <span class="dc">DC 10 WIS</span> or spend action laughing.</p>
+      </div>
+ 
+      <div class="stat-block no-break">
+        <h3>Merchant Hare (×3)</h3>
+        <div class="stat-row">
+          <span><span class="stat-label">HD</span> 1 (4 HP)</span>
+          <span><span class="stat-label">AC</span> 10</span>
+          <span><span class="stat-label">MV</span> Fast</span>
+          <span><span class="stat-label">ATK</span> Flee (non-combatant)</span>
+        </div>
+        <p class="ability">Non-hostile. Communicate via nudging and placing items. Threatened → shriek → 1d4 Pastel Rabbits arrive in 1 round. Hares flee.</p>
+      </div>
+ 
+      <div class="stat-block no-break">
+        <h3>Sugar Sprite</h3>
+        <div class="stat-row">
+          <span><span class="stat-label">HD</span> 1 (5 HP)</span>
+          <span><span class="stat-label">AC</span> 13</span>
+          <span><span class="stat-label">MV</span> Fly 30ft</span>
+          <span><span class="stat-label">ATK</span> Shard throw d4</span>
+        </div>
+        <p class="ability"><strong>Crystallize:</strong> On failed <span class="dc">DC 10 DEX</span>, target's feet are stuck for 1 round.</p>
+        <p class="ability"><strong>Trade:</strong> Offer a colored egg → receives Crystal Shard (throw to create difficult terrain, 10ft radius, 2 rounds).</p>
+      </div>
+ 
+      <!-- BOSS -->
+      <div class="section-title">Final Boss</div>
+      <div class="stat-block no-break" style="border-color:#6a2a3a;background:#f8f0f4;">
+        <h3 style="color:#6a2a3a;">☠ The Ovum Eternal</h3>
+        <div class="stat-row">
+          <span><span class="stat-label">HD</span> 2</span>
+          <span><span class="stat-label">HP</span> 10 (14 if Lv3 party)</span>
+          <span><span class="stat-label">AC</span> 14 (stone)</span>
+          <span><span class="stat-label">MV</span> None (immobile)</span>
+        </div>
+        <div class="stat-row">
+          <span><span class="stat-label">ATK</span> Pastel Bolt (ranged, d6)</span>
+        </div>
+        <p class="ability"><strong>Chromatic Aura (passive):</strong> Once per player turn, roll d6 on Corruption table. Effect applies to everyone in the room.</p>
+        <p class="ability"><strong>Summon Touched (1/combat):</strong> Calls 1 Pastel Rabbit. Triggers only if players ignore the enthralled child for 2 full rounds.</p>
+        <p class="ability"><strong>Shell of the Eternal (1/combat, 2× if Lv3):</strong> +4 AC for 1 round.</p>
+        <p class="ability"><strong>Weak Point:</strong> A glowing crack pulses brighter when damaged — telegraphs it's beatable.</p>
+        <p class="ability" style="margin-top:6px;background:var(--mint-light);padding:4px 6px;border-radius:3px;"><strong>Re-seal (good ending):</strong> Press a colored egg to the idol and speak a lullaby/prayer. <span class="dc">DC 10 CHA or WIS</span> (advantage if Cultist Notes held). Idol goes dormant.</p>
+        <p class="ability" style="background:var(--rose-light);padding:4px 6px;border-radius:3px;margin-top:3px;"><strong>Destroy:</strong> Deal damage until 0 HP. Corruption fades immediately.</p>
+      </div>
+ 
+    </div>
+ 
+    <div>
+ 
+      <!-- CORRUPTION TABLE -->
+      <div class="section-title">🌈 Pastel Corruption Table</div>
+      <p style="font-size:11.5px;font-style:italic;margin-bottom:6px;">Roll d6 once per player turn in the Egg Chamber (and optionally in any deeply corrupted area).</p>
+      <table class="d6-table" style="margin-bottom:12px;">
+        <thead><tr><th>d6</th><th>Effect</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><b>Sugar Rush</b> — All players gain +1 to attack rolls this round.</td><td><span class="tag tag-buff">BUFF</span></td></tr>
+          <tr><td>2</td><td><b>Dizzy Colors</b> — All creatures: <span class="dc">DC 8 CON</span> or -1 AC this round.</td><td><span class="tag tag-debuff">DEBUFF</span></td></tr>
+          <tr><td>3</td><td><b>Bunny Blessing</b> — One random creature gains +10ft movement this round.</td><td><span class="tag tag-buff">BUFF</span></td></tr>
+          <tr><td>4</td><td><b>Petal Storm</b> — Room fills with petals. All ranged attacks at disadvantage this round.</td><td><span class="tag tag-mixed">MIXED</span></td></tr>
+          <tr><td>5</td><td><b>Sweetened Mind</b> — One random creature: <span class="dc">DC 10 WIS</span> or wastes action admiring colors.</td><td><span class="tag tag-debuff">DEBUFF</span></td></tr>
+          <tr><td>6</td><td><b>Gilded Shell</b> — One random creature gains +2 AC this round.</td><td><span class="tag tag-buff">BUFF</span></td></tr>
+        </tbody>
+      </table>
+ 
+      <!-- LOOT SUMMARY -->
+      <div class="section-title">Loot & Items</div>
+      <table style="margin-bottom:12px;">
+        <thead><tr><th>Item</th><th>Found In</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><b>Candy Potion</b></td><td>Area 3 (alcove egg)</td><td>Heals 1d4 HP. Tastes amazing.</td></tr>
+          <tr><td><b>Pastel Mist Vial</b></td><td>Market Stall 1 (trade)</td><td>Throw: 10ft obscuring fog cloud, 2 rounds. Disadvantage on attacks within.</td></tr>
+          <tr><td><b>Corrupted Carrot</b></td><td>Market Stall 2 (trade)</td><td>Darkvision 1 hour. Eyes glow pink — disadvantage on stealth in dark.</td></tr>
+          <tr><td><b>Warren Map (bark)</b></td><td>Market Stall 3 (trade)</td><td>Full dungeon layout. Players see the complete map.</td></tr>
+          <tr><td><b>Crystal Shard</b></td><td>Candy Vein (trade w/ Sprite)</td><td>Throw: 10ft difficult terrain, 2 rounds.</td></tr>
+          <tr><td><b>Cultist Notes</b></td><td>Painted Hall (satchel)</td><td>Advantage on the re-sealing check in Area 5.</td></tr>
+          <tr><td><b>8 copper pieces</b></td><td>Painted Hall (satchel)</td><td>—</td></tr>
+        </tbody>
+      </table>
+ 
+      <!-- ENDINGS -->
+      <div class="section-title">Endings & Rewards</div>
+      <div class="card theme-mint no-break" style="margin-bottom:8px;">
+        <div class="card-header">✨ Best Ending — Re-Seal</div>
+        <div class="card-body">
+          <ul class="inline">
+            <li>All three children rescued and returned safely.</li>
+            <li>Corruption fades; warren returns to normal.</li>
+            <li>The befriended Warren Hare follows players out and nuzzles them.</li>
+            <li><b>Reward:</b> 20gp village reward + feast + one <b>Cloverwick Egg</b> per player (reroll any single die once before next long rest).</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card theme-coral no-break" style="margin-bottom:12px;">
+        <div class="card-header">⚔️ Standard Ending — Destroy</div>
+        <div class="card-body">
+          <ul class="inline">
+            <li>Corruption fades immediately. Warren hare grateful.</li>
+            <li><b>Reward:</b> 20gp village reward + feast.</li>
+            <li><em>No Cloverwick Eggs — players don't get the bonus.</em></li>
+          </ul>
+        </div>
+      </div>
+ 
+      <!-- QUICK REFERENCE -->
+      <div class="section-title">Quick DM Reminders</div>
+      <ul class="inline">
+        <li><b>Light:</b> Enforce Shadowdark's real-time torch rules — the warren is naturally dark outside corrupted zones.</li>
+        <li><b>Corruption zones:</b> Areas 3, 3b, 4, and 5 count as "corrupted." Roll the table there if the mood calls for it, or save it for Area 5 only.</li>
+        <li><b>The children:</b> Kids 1 & 2 are asleep in Area 3 (can be carried, slow movement). Kid 3 is enthralled in Area 5 — roleplay snaps them out (<span class="dc">DC 10 CHA</span>).</li>
+        <li><b>The Warren Hare ally:</b> If befriended in Area 1, it reappears outside Area 5 and can be sent in as a distraction (draws 1 Pastel Rabbit's attention for 2 rounds).</li>
+        <li><b>Flex rooms:</b> Warren Market (2b) and Painted Hall (3b) can be cut if running short on time.</li>
+        <li><b>On re-sealing:</b> Let players get creative — a lullaby, a prayer, a spring poem, or a heartfelt plea all qualify. Reward good roleplay with auto-success.</li>
+      </ul>
+ 
+    </div>
+  </div>
+ 
+  <div class="page-num">PAGE 2 OF 2 · THE HOLLOW WARREN · DM REFERENCE · HAPPY EASTER 🐣</div>
+</div>
+ 
+</body>
+</html>
